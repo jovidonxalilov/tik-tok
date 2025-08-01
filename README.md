@@ -4,6 +4,8 @@ A new Flutter project.
 
 ## Getting Started
 
+👉 [Youtubeda vide ko'rish](https://youtube.com/shorts/u2MTG-A3X4s?feature=share)
+
 This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:
