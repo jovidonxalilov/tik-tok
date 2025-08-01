@@ -5,19 +5,13 @@ import 'package:imtihon6/features/camera_photo/presentation/bloc/state.dart';
 import 'package:uuid/uuid.dart';
 import '../../../../config/service/firebase_service.dart';
 import '../../../../core/constants/app_status.dart';
-// import '../../services/firebase_service.dart';
-// import '../../models/media_item.dart';
-// import '../../main.dart';
-// import 'camera_event.dart';
 import '../../../../main.dart';
 import '../../../user/data/model/media_model.dart';
-import 'state.dart';
-// import '../../enums/app_status.dart';
 import 'event.dart';
 
 class CameraBloc extends Bloc<CameraEvent, CameraState> {
   final FirebaseService _firebaseService;
-  final String userId; // 🔥 Auth o‘rniga tashqaridan kiritiladi
+  final String userId;
   final Uuid _uuid = const Uuid();
   int _currentCameraIndex = 0;
 

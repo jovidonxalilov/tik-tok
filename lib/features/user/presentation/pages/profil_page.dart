@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:imtihon6/config/service/firebase_service.dart';
 import 'package:imtihon6/core/dp/dp_injection.dart';
 import '../../../../core/constants/app_status.dart';
+import '../../../camera_photo/presentation/widgets/video_player_widget.dart';
 import '../../data/model/media_model.dart';
 import '../bloc/profile_bloc.dart';
 import '../bloc/profile_event.dart';
@@ -69,7 +70,6 @@ class ProfileScreen extends StatelessWidget {
             return Column(
               children: [
                 SizedBox(height: 20),
-                // Profile Picture
                 Container(
                   width: 80,
                   height: 80,
@@ -125,7 +125,6 @@ class ProfileScreen extends StatelessWidget {
                       Expanded(
                         child: OutlinedButton(
                           onPressed: () {
-                            // Simulate stats update
                             context.read<ProfileBloc>().add(ProfileUpdateStats(
                               followersCount: (state.profile?.followersCount ?? 0) + 1,
                             ));
@@ -174,46 +173,56 @@ class ProfileScreen extends StatelessWidget {
                           children: List.generate(mediaItems.length, (index) {
                             try {
                               final mediaItem = mediaItems[index];
-
-                              return Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                child: Stack(
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(4),
-                                      child: Image.network(
-                                        mediaItem.thumbnailUrl ?? '',
-                                        width: double.infinity,
-                                        height: double.infinity,
-                                        fit: BoxFit.cover,
-                                        errorBuilder: (context, error, stackTrace) {
-                                          return Container(
-                                            color: Colors.grey[300],
-                                            child: Icon(Icons.image, color: Colors.grey[600]),
-                                          );
-                                        },
-                                      ),
+                              return GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (_) => MediaPreviewDialog(
+                                      url: mediaItem.thumbnailUrl ?? '',
+                                      type: mediaItem.type,
                                     ),
-                                    if (mediaItem.type == MediaType.video)
-                                      Positioned(
-                                        top: 4,
-                                        right: 4,
-                                        child: Container(
-                                          padding: EdgeInsets.all(2),
-                                          decoration: BoxDecoration(
-                                            color: Colors.black.withOpacity(0.7),
-                                            borderRadius: BorderRadius.circular(2),
-                                          ),
-                                          child: Icon(
-                                            Icons.play_arrow,
-                                            color: Colors.white,
-                                            size: 12,
-                                          ),
+                                  );
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  child: Stack(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(4),
+                                        child: Image.network(
+                                          mediaItem.thumbnailUrl ?? '',
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (context, error, stackTrace) {
+                                            return Container(
+                                              color: Colors.grey[300],
+                                              child: Icon(Icons.image, color: Colors.grey[600]),
+                                            );
+                                          },
                                         ),
                                       ),
-                                  ],
+                                      if (mediaItem.type == MediaType.video)
+                                        Positioned(
+                                          top: 4,
+                                          right: 4,
+                                          child: Container(
+                                            padding: EdgeInsets.all(2),
+                                            decoration: BoxDecoration(
+                                              color: Colors.black.withOpacity(0.7),
+                                              borderRadius: BorderRadius.circular(2),
+                                            ),
+                                            child: Icon(
+                                              Icons.play_arrow,
+                                              color: Colors.white,
+                                              size: 12,
+                                            ),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
                                 ),
                               );
                             } catch (e) {

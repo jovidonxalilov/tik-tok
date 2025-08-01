@@ -32,7 +32,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       if (profile == null) {
         profile = UserProfile(
           id: userId,
-          username: '@user_${userId.substring(0, 8)}',
+          username: '@user_${userId.substring(0, userId.length >= 8 ? 8 : userId.length)}',
           profileImageUrl: '',
         );
         await _firebaseService.saveUserProfile(profile);
